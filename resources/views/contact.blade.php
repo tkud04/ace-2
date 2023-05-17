@@ -3,76 +3,86 @@
 @section('title',"Contact Us")
 
 @section('content')
-<section class="block remove-top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="region-contact-info team-detail-info">
-                                        <div class="heading2">
-                                            <span>Fast And Safe</span>
-                                            <h3>OFFICE ADDRESS</h3>
-                                        </div>
-                                        <p>Transport logitec, ltd. 2258 millenioum Street Columbia, DK 85966</p>
-                                        <div class="contact-detail">
-                                            <span class="contact">
-                                                <i class="fa fa-mobile"></i>
-                                                <strong>Phone No</strong>
-                                                <span>+858 5549 512</span>
-                                            </span>
-                                            <span class="contact">
-                                                <i class="fa fa-envelope"></i>
-                                                <strong>Email Address</strong>
-                                                <span>info@transport@gmail.com</span>
-                                            </span>
-                                            <span class="contact">
-                                                <i class="fa fa-clock-o"></i>
-                                                <strong>Office Timing</strong>
-                                                <span>10:00am - 06:00pm / Sunday: Close</span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="get-quote-form contact-info-form">
-                                        <div class="heading2">
-                                            <span>Fast And Safe</span>
-                                            <h3>GET IN TOUCH</h3>
-                                        </div>
-                                        <p>Fill The Form Bellow. And Get In Touch Immeditily</p>
-                                        <div class="contactform">
-                                            <div id="message"></div>
-                                            <form id="contactform" method="post" action="{{url('contact')}}">
-                                                {!! csrf_field() !!}
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <input type="text" placeholder="Complete Name" class="text-field input-style" id="name" name="name">
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <input type="email" placeholder="Email Address" id="email" name="email" class="text-field input-style">
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <input type="text" placeholder="Subject" id="subject" name="subject" class="text-field input-style">
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <textarea placeholder="Description" class="text-field input-style" id="description" name="description"></textarea>
-                                                    </div>
-                                                    <div class="col-md-12"><div class="g-recaptcha" data-sitekey="6LelmzAUAAAAAHBE2SJeRMfnzYVxH9RMGQstUij2"><div style="width: 304px; height: 78px;"><div><iframe title="reCAPTCHA" src="https://www.google.com/recaptcha/api2/anchor?ar=1&amp;k=6LelmzAUAAAAAHBE2SJeRMfnzYVxH9RMGQstUij2&amp;co=aHR0cHM6Ly9odG1sLndlYmluYW5lLmNvbTo0NDM.&amp;hl=en&amp;v=M-QqaF9xk6BpjLH22uHZRhXt&amp;size=normal&amp;cb=qv4ba36tcamk" width="304" height="78" role="presentation" name="a-nny3t0bz8js6" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"></iframe></div><textarea id="g-recaptcha-response" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div><iframe style="display: none;"></iframe></div></div>
-                                                    <div class="col-md-12">
-                                                        <button id="quote-btn" title="" itemprop="url" type="submit" class="theme-btn"><i class="fa fa-paper-plane"></i>Contact Now</button>
-                                                        <img src="images/ajax-loader.gif" class="loader" alt="">
-                                                    </div>
-                                                </div>
-                                            </form> 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+   <!--start of middle sec-->
+<div class="middle-sec wow fadeIn animated animated" data-wow-offset="10" data-wow-duration="2s" style="visibility: visible; animation-duration: 2s;">
+    <div class="page-header">
+          <div class="container text-center">
+        <h2 class="text-primary text-uppercase">contact us</h2>
+        <p>Let us know what you have in mind and we will get back to you in an instant!</p>
+      </div>
+        </div>
+    <section class="container equal-height-container">
+          <div class="row">
+        <div class="col-sm-12">
+              <div class="row">
+            <div class="col-sm-8 col-md-9 main-sec">
+                  <div class="row">
+                <div class="col-sm-12">
+                      <ol class="breadcrumb  dashed-border">
+                    <li><a href="{{url('/')}}">Home</a></li>
+                    <li class="active">Contact us</li>
+                  </ol>
                     </div>
+                <div class="col-sm-12">
+                      <form method="post" id="contact-form" action="{{url('contact')}}" accept-charset="UTF-8">
+						  {!! csrf_field() !!}
+                    <fieldset>
+                          <legend>contact us</legend>
+                        </fieldset>
+						<?php
+						$name = ""; $phone = ""; $email = "";
+						
+						if($user != null)
+						{
+							$name = $user->fname." ".$user->lname;
+							$email = $user->email;
+							$phone = $user->phone;
+						}
+						?>
+                    <ul class="row list-unstyled">
+                          <li class="col-md-12">
+                        <label class="control-label" for="comment-author">Your name <span class="req">*</span></label>
+                        <input type="text" class="form-control" name="name"  value="{{$name}}" id="comment-author" required="">
+                      </li>
+                          <li class="col-md-12">
+                        <label class="control-label" for="comment-email">Your email <span class="req">*</span></label>
+                        <input type="email" class="form-control" name="email" value="{{$email}}" id="comment-email" required="">
+                      </li>
+					  <li class="col-md-12">
+                        <label class="control-label" for="comment-email">Your phone number <span class="req">*</span></label>
+                        <input type="number" class="form-control" name="phone" value="{{$phone}}" id="comment-phone" required="">
+                      </li>
+                          <li class="col-md-12">
+                        <label class="control-label" for="comment-body">Your message <span class="req">*</span></label>
+                        <textarea class="form-control" rows="5" cols="40" name="msg" id="comment-body" required=""></textarea><span class="help-block">350 characters maximum</span>
+                      </li>
+                          
+                          <li class="col-md-12">
+                        <button class="btn btn-primary  hvr-underline-from-center-primary" id="comment-submit" type="submit">Send Message</button>
+                      </li>
+                        </ul>
+                  </form>
+                    </div>
+              </div>
                 </div>
+            <div class="col-sm-4 col-md-3 sub-data-right sub-equal">
+                  <div class="row">
+                <section class="col-sm-12">
+                      <h5 class="sub-title text-info text-uppercase">Customer support</h5>
+                      <p>We are here to help any way we can. We continually strive to make your shopping experience as convenient and easy as possible.<br><br> Should you have any questions about our products, your orders or further enquiries; please feel free to contact us by phone or by email.<br><br> 
+                    <span class="small"> <span class="text-info text-capitalize"> <strong>Phone number</strong> :</span><br>
+                        <a href="tel:2348097039692">+234 809 703 9692</a><br>
+                        <span class="text-info text-capitalize"> <strong>Email us</strong> :</span><br>
+                        <a href="#">support@aceluxurystore.com</a></span></p>
+                    </section>
+                
+              </div>
+                </div>
+          </div>
             </div>
+      </div>
         </section>
+  </div>
+  <!--end of middle sec--> 
+    
 @stop

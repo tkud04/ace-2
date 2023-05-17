@@ -1,112 +1,155 @@
-<?php
-$void = 'javascript:void(0)';
-$statuses = ['none' => "Select status", 'station' => "ARRIVED AT STATION", 'hold' => "ON HOLD", 'transit' => "IN TRANSIT", 'delivery' => "OUT FOR DELIVERY", 'delivered' => "DELIVERED"];
-?>
 @extends('layout')
 
 @section('title',"Dashboard")
 
+@section('styles')
+  <!-- DataTables CSS -->
+  <link href="lib/datatables/css/buttons.bootstrap.min.css" rel="stylesheet" /> 
+  <link href="lib/datatables/css/buttons.dataTables.min.css" rel="stylesheet" /> 
+  <link href="lib/datatables/css/dataTables.bootstrap.min.css" rel="stylesheet" /> 
+@stop
+
 @section('content')
-<section class="block">
-<div class="container">
-      <div class="row">
-        @include('_admin-nav')
-
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
-        @include('_admin-header',['title' => "Dashboard"])
-
-          <div class="row mb-5">
-              <div class="col-md-4">
-                  <div class="card">
-                      <div class="card-body">
-                          <h5 class="card-title">{{$stats['trackings']}}</h5>
-                          <p class="card-text">Active Trackings</p>
-                          <a href="{{url('trackings')}}" class="btn btn-primary">View more</a>
-                      </div>
+   <!--start of middle sec-->
+<div class="middle-sec wow fadeIn animated animated" data-wow-offset="10" data-wow-duration="2s" style="visibility: visible; animation-duration: 2s;">
+    <div id="particles"><canvas class="pg-canvas" width="1349" height="450" style="display: block;"></canvas>
+      <div id="not-found" class="wow fadeInDown text-center container animated animated" style="visibility: visible;">
+        <div class="reset">
+          <h2 class="text-primary text-uppercase">Welcome to your Dashboard</h2>
+          <p>From your account dashboard you can view your recent orders, manage your shipping and billing addresses, and edit your password and account details</p>
+		  <br><br><br>
+           <div class="row" style="margin-top: 10px;">
+		    <div class="col-lg-3 col-md-3 col-sm-12">
+              <div class="card text-center" style="">
+                <div class="card-body">         
+                  <div class="">
+                    <h5 class="card-title"><i class="fa fa-briefcase fa-2x" aria-hidden="true"></i></h5>
+                    <p class="card-text">View/edit your account</p>
+                    <a href="{{url('profile')}}" class="btn btn-primary">View profile</a>
                   </div>
-              </div>
-              <div class="col-md-4">
-                  <div class="card">
-                      <div class="card-body">
-                          <h5 class="card-title">{{$stats['users']}}</h5>
-                          <p class="card-text">Active Users</p>
-                          <a href="{{$void}}" class="btn btn-primary">View more</a>
-                      </div>
+               </div>
+             </div>
+            </div>
+			<div class="col-lg-3 col-md-3 col-sm-12">
+              <div class="card text-center" style="">
+                <div class="card-body">         
+                  <div class="">
+                    <h5 class="card-title"><i class="fa fa-heart fa-2x" aria-hidden="true"></i></h5>
+                    <p class="card-text">View your wishlist</p>
+                    <a href="{{url('wishlist')}}" class="btn btn-primary">wishlist</a>
                   </div>
-              </div>
-              <div class="col-md-4">
-                  <div class="card">
-                      <div class="card-body">
-                          <h5 class="card-title">{{$stats['plugins']}}</h5>
-                          <p class="card-text">Active Plugins</p>
-                          <a href="{{url('plugins')}}" class="btn btn-primary">View more</a>
-                      </div>
+               </div>
+             </div>
+            </div>
+			<div class="col-lg-3 col-md-3 col-sm-12">
+              <div class="card text-center" style="">
+                <div class="card-body">         
+                  <div class="">
+                    <h5 class="card-title"><i class="fa fa-briefcase fa-2x" aria-hidden="true"></i></h5>
+                    <p class="card-text">View your compare list</p>
+                    <a href="{{url('compare')}}" class="btn btn-primary">compare</a>
                   </div>
-              </div>
-          </div>
-
-          <h2>Latest Trackings</h2>
-          <div class="table-responsive">
-            <table class="table table-striped table-sm">
-            <thead>
-                <tr>
-                 <th>Transaction No.</th>
-                  <th>Details</th>
-                  <th>Shipper Information</th>
-                  <th>Receiver Information</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                  <?php
-                   foreach($stats['topTrackings'] as $t)
-                   {
-                     $tu = url('tracking')."?xf=".$t['tnum'];
-                     $ru = url('remove-tracking')."?xf=".$t['tnum'];
-                     $shipper = $t['shipper'];
-                     $receiver = $t['receiver'];
-                  ?>
-                <tr>
-                  <td>{{$t['tnum']}}</td>
-                  <td>
-                    <ul class="no-dot">
-                      <li>Ship Type: {{$t['stype']}}</li>
-                      <li>Weight: {{$t['weight']}}kg</li>
-                      <li>Origin office: {{$t['origin']}}</li>
-                      <li>Destination office: {{$t['dest']}}</li>
-                    </ul>
-                   </td>
-                  <td>
-                    <ul class="no-dot">
-                      <li>Name: {{$shipper['name']}}</li>
-                      <li>Phone: {{$shipper['phone']}}</li>
-                      <li>Address: {{$shipper['address']}}</li>
-                    </ul>
-                   </td>
-                   <td>
-                    <ul class="no-dot">
-                      <li>Name: {{$receiver['name']}}</li>
-                      <li>Phone: {{$receiver['phone']}}</li>
-                      <li>Address: {{$receiver['address']}}</li>
-                    </ul>
-                  </td>
-                  <td><span class="badge bg-info">{{$statuses[$t['status']]}}</span></td>
-                  <td>
-                    <div class="btn-group">
-                      <a href="{{$tu}}" class="btn btn-primary">View</a>
-                      <a href="{{$ru}}" class="btn btn-danger">Remove</a>
-                   </div>  
-                  </td>
-                </tr>
-                <?php
-                   }
-                ?>
-              </tbody>
-            </table>
-          </div>
-        </main>
+               </div>
+             </div>
+            </div><div class="col-lg-3 col-md-3 col-sm-12">
+              <div class="card text-center" style="">
+                <div class="card-body">         
+                  <div class="">
+                    <h5 class="card-title"><i class="fa fa-briefcase fa-2x" aria-hidden="true"></i></h5>
+                    <p class="card-text">View your recent orders</p>
+                    <a href="{{url('orders')}}" class="btn btn-primary">View orders</a>
+                  </div>
+               </div>
+             </div>
+            </div>
+          
+		   </div>
+		   <br><br><br>
+           <div class="row" style="margin-top: 10px;">
+		     <div class="col-lg-12 col-md-12 col-sm-12">
+              <div class="card text-center" style="">
+                <div class="card-body">         
+                  <div class="">
+                    <h5 class="card-title"><i class="fa fa-briefcase fa-2x" aria-hidden="true"></i></h5>
+                    <p class="card-text">Recent Orders as at <?=date("jS F, Y")?></p>
+                    <div class="card-body table-responsive m-t-40 wow fadeInUp">
+                	   <table class="table ace-table">
+				   <thead>
+                        <tr>
+                                    <th>Date</th>
+                                    <th>Reference #</th>
+                                    <th>Items</th>
+                                    <th>Amount</th>
+									<th>Status</th>                                                                       
+                                    <th>Actions</th>                                                                       
+                                </tr>
+                       </thead>
+					<tbody>
+					<?php
+					  if(count($orders) > 0)
+					  {
+						 foreach($orders as $o)
+						 {
+							 if($o['date'] == date("jS F, Y"))
+							 {
+							 $items = $o['items'];
+							 $totals = $o['totals'];
+							 $statusClass = $o['status'] == "paid" ? "success" : "danger";
+							 $uu = "#";
+				    ?>
+					 <tr>
+					   <td>{{$o['date']}}</td>
+					   <td>{{$o['reference']}}</td>
+					    <td>
+						<?php
+						 foreach($items as $i)
+						 {
+							 $product = $i['product'];
+							 $qty = $i['qty'];
+							 $pu = url('product')."?sku=".$product['sku'];
+							 $tu = url('track')."?o=".$o['reference'];
+						 ?>
+						 <a href="{{$pu}}" target="_blank">{{$product['sku']}}</a> (x{{$qty}})<br>
+						 <?php
+						 }
+						?>
+					   </td>
+					   <td>&#8358;{{number_format($o['amount'],2)}}</td>		  
+					   <td><span class="label label-{{$statusClass}}">{{strtoupper($o['status'])}}</span></td>
+					   <td><a class="btn btn-primary" href="{{$tu}}">Track</span></td>
+					 </tr>
+					<?php
+						 }
+						 }  
+					  }
+                    ?>						  
+					</tbody>
+				  </table>
+				</div>
+                  </div>
+               </div>
+             </div>
+            </div>
+		   </div>
+        </div>
       </div>
     </div>
-</section>
+  </div>
+  <!--end of middle sec--> 
+    
+@stop
+
+
+@section('scripts')
+<!-- Datatables JS -->
+  <script src="lib/datatables/js/datatables.min.js"></script>
+    <script src="lib/datatables/js/cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="lib/datatables/js/cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
+    <script src="lib/datatables/js/cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="lib/datatables/js/cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="lib/datatables/js/cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="lib/datatables/js/cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+    <script src="lib/datatables/js/cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+    <script src="lib/datatables/js/datatables-init.js"></script>
+  
 @stop
